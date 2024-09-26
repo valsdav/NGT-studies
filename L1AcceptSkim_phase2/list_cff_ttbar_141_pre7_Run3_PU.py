@@ -1,0 +1,20 @@
+inputFileNames =  [
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/098e10ba-a9af-4e57-9116-2ed22913faaf.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/191167e1-17e3-4819-8c62-903a857ff7db.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/1d761dc7-ae3a-4d5b-b0b4-203e27a781a2.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/21ea3a1f-e9da-49cd-a0ba-27d50d2f2d9f.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/2455fb86-c276-4e25-90ce-ee32ab7fed19.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/2f8e01d8-7653-4aad-b665-bbc7201bc0ee.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/36174afa-9447-46bc-91b8-f6c4f648ad3a.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/59d3ab50-8798-42af-8dbd-267a04e66d78.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/5ea60a1e-980a-43ac-b62b-32daa7b1e957.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/608f83c4-e2a9-418d-a40e-d113aa76c431.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/6d04c83f-66d6-41d4-aa84-dcb81b1dede7.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/70218972-a9ae-4a98-8b1d-e03d92121fc2.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/7ba77796-6a65-4715-8062-1691541f8181.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/9f824256-fe5c-4836-b1d2-c44575650413.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/d2aa3b03-2eb9-45e1-9a52-6b433bdb71f0.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/f37dcbd5-f0f7-493a-8aba-b0a071a36c11.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/fcc664c8-e00b-49a6-adf4-3b64af2c0865.root",
+      "root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_14_1_0_pre7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/140X_mcRun3_2024_realistic_v15_STD_ReHLT_2024_PU-v2/2580000/fd0c9316-92e2-4cf7-a61d-6b323969538b.root"
+    ]

@@ -9,6 +9,19 @@ from Configuration.Eras.Era_Phase2C17I13M9_cff import Phase2C17I13M9
 
 process = cms.Process('HLTX',Phase2C17I13M9)
 
+# Get VarParsing
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing ('python')
+# read an input argument
+options.register ('inputFile',
+                    0,
+                    VarParsing.multiplicity.singleton,
+                    VarParsing.varType.int,
+                    "Input file to process")
+options.parseArguments()
+
+
+
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
@@ -26,17 +39,17 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10),
+    input = cms.untracked.int32(100),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input
-from list_cff_MinBias_141_pre6_Phase2_PU import inputFileNames
+from list_cff_ttbar_141_pre7_Phase2_PU import inputFileNames
 
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring(inputFileNames),
+    fileNames = cms.untracked.vstring(inputFileNames[options.inputFile]),
     inputCommands = cms.untracked.vstring(
         'keep *',
         'drop l1tPFJets_*_*_*',
@@ -71,8 +84,8 @@ process.options = cms.untracked.PSet(
     modulesToIgnoreForDeleteEarly = cms.untracked.vstring(),
     numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(0),
     numberOfConcurrentRuns = cms.untracked.uint32(1),
-    numberOfStreams = cms.untracked.uint32(64),
-    numberOfThreads = cms.untracked.uint32(128),
+    numberOfStreams = cms.untracked.uint32(10),
+    numberOfThreads = cms.untracked.uint32(10),
     printDependencies = cms.untracked.bool(False),
     sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
     throwIfIllegalParameter = cms.untracked.bool(True),
@@ -93,7 +106,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('GEN-SIM-DIGI-RAW-MINIAOD'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:output_Phase2_L1T.root'),
+    fileName = cms.untracked.string('file:output_Phase2_L1T_' + str(options.inputFile) + '.root'),
     outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -248,9 +261,7 @@ l_pathname = [
 'pTkMuonPuppiHT6_320',
 'pTkMuonTkEle7_23',
 'pTkMuonTkIsoEle7_20',
-'pTripleTkMuon5_3_3',
-'L1T_DoubleNNTau52',
-'L1T_SingleNNTau150',
+'pTripleTkMuon5_3_3'
 ]
 
 l_path = []
@@ -276,8 +287,15 @@ process.L1skimFilter = cms.EDFilter("PathStatusFilter",
 process.L1skimPath = cms.Path(process.L1skimFilter)
 l_path.append(process.L1skimPath)
 
-process.schedule.extend([process.endjob_step,process.FEVTDEBUGHLToutput_step])
+process.schedule.extend([*l_path, process.endjob_step,process.FEVTDEBUGHLToutput_step])
 
+# Add the filter in the output module
+EventSelection = cms.PSet(
+    SelectEvents = cms.untracked.PSet(
+        SelectEvents = cms.vstring("L1skimPath")                     
+    )
+)
+process.FEVTDEBUGHLToutput.SelectEvents = EventSelection.SelectEvents
 
 
 # customisation of the process.
