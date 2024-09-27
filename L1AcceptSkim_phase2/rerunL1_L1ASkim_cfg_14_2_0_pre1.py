@@ -2,25 +2,12 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: Phase2 -s L1,L1TrackTrigger,L1P2GT,HLT:75e33 --processName=HLTX --conditions auto:phase2_realistic_T33 --geometry Extended2026D110 --era Phase2C17I13M9 --eventcontent FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RAW-MINIAOD --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,Configuration/DataProcessing/Utils.addMonitoring,L1Trigger/Configuration/customisePhase2FEVTDEBUGHLT.customisePhase2FEVTDEBUGHLT,L1Trigger/Configuration/customisePhase2TTOn110.customisePhase2TTOn110, --filein /store/mc/Phase2Spring24DIGIRECOMiniAOD/TT_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW-MINIAOD/PU200_AllTP_140X_mcRun4_realistic_v4-v1/2560000/11d1f6f0-5f03-421e-90c7-b5815197fc85.root --fileout file:output_Phase2_L1T.root --python_filename rerunL1_cfg.py --inputCommands=keep *, drop l1tPFJets_*_*_*, drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT --outputCommands=drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT --mc -n 1 --nThreads 1 --no_exec
+# with command line options: Phase2 -s L1,L1TrackTrigger,L1P2GT --processName=SKIM --conditions auto:phase2_realistic_T33 --geometry Extended2026D110 --era Phase2C17I13M9 --eventcontent FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RAW-MINIAOD --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,Configuration/DataProcessing/Utils.addMonitoring,L1Trigger/Configuration/customisePhase2FEVTDEBUGHLT.customisePhase2FEVTDEBUGHLT,L1Trigger/Configuration/customisePhase2TTOn110.customisePhase2TTOn110 --filein file:/eos/cms/store/relval/CMSSW_14_1_0_pre6/RelValMinBias_14TeV/GEN-SIM-DIGI-RAW/PU_141X_mcRun4_realistic_v1_STD_2026D110_PU-v3/2560000/005fa022-76e5-4eef-8909-2678cca4152b.root --fileout file:output_Phase2_L1T.root --python_filename rerunL1_L1ASkim_cfg_14_2_0_pre1.py --inputCommands=keep *, drop l1tPFJets_*_*_*, drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT --outputCommands=drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT --mc -n -1 --nThreads 12 --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Phase2C17I13M9_cff import Phase2C17I13M9
 
-process = cms.Process('HLTX',Phase2C17I13M9)
-
-# Get VarParsing
-from FWCore.ParameterSet.VarParsing import VarParsing
-options = VarParsing ('python')
-# read an input argument
-options.register ('inputFile',
-                    0,
-                    VarParsing.multiplicity.singleton,
-                    VarParsing.varType.int,
-                    "Input file to process")
-options.parseArguments()
-
-
+process = cms.Process('SKIM',Phase2C17I13M9)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -34,18 +21,27 @@ process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.L1TrackTrigger_cff')
 process.load('Configuration.StandardSequences.SimPhase2L1GlobalTriggerEmulator_cff')
 process.load('L1Trigger.Configuration.Phase2GTMenus.SeedDefinitions.prototypeSeeds')
-process.load('HLTrigger.Configuration.HLT_75e33_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+
+# Get VarParsing
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing ('python')
+# read an input argument
+options.register ('inputFile',
+                    0,
+                    VarParsing.multiplicity.singleton,
+                    VarParsing.varType.int,
+                    "Input file to process")
+options.parseArguments()
+
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100),
+    input = cms.untracked.int32(-1),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
-# Input
 from list_cff_ttbar_Spring24_Phase2_PU import inputFileNames
-
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
@@ -53,9 +49,7 @@ process.source = cms.Source("PoolSource",
     inputCommands = cms.untracked.vstring(
         'keep *',
         'drop l1tPFJets_*_*_*',
-        'drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT',
-        'drop *_hlt*_*_HLT',
-        'drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT'
+        'drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT'
     ),
     secondaryFileNames = cms.untracked.vstring()
 )
@@ -84,8 +78,8 @@ process.options = cms.untracked.PSet(
     modulesToIgnoreForDeleteEarly = cms.untracked.vstring(),
     numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(0),
     numberOfConcurrentRuns = cms.untracked.uint32(1),
-    numberOfStreams = cms.untracked.uint32(2),
-    numberOfThreads = cms.untracked.uint32(4),
+    numberOfStreams = cms.untracked.uint32(0),
+    numberOfThreads = cms.untracked.uint32(1),
     printDependencies = cms.untracked.bool(False),
     sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
     throwIfIllegalParameter = cms.untracked.bool(True),
@@ -94,12 +88,31 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('Phase2 nevts:1'),
+    annotation = cms.untracked.string('Phase2 nevts:-1'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
+myOutputCommands = cms.untracked.vstring(
+        'drop *_*_*_HLT',
+        'drop *_*_*_RECO',
+        'drop *_*_*_SIM',
+        'drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT',
+        'keep FEDRawDataCollection_rawDataCollector_*_HLT',
+        'keep *_simSiPixelDigis_*_*',
+        'keep Phase2TrackerDigiedmDetSetVector_*_*_HLT',
+        'keep *_simMuonRPCDigis_*_HLT',
+        'keep *_*_bunchSpacing_HLT',
+        'keep *_mix_FTL*_HLT',
+        'keep *_mix_EBTimeDigi_HLT',
+        'keep *_simHGCalUnsuppressedDigis_*_HLT',
+        'keep *_simMuonCSCDigis_*_HLT',
+        'keep *_simMuonDTDigis_*_HLT',
+        'keep *_simMuonGEMDigis_*_HLT',
+        'keep *_*_*_SKIM'
+        )
+
 
 process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
     dataset = cms.untracked.PSet(
@@ -107,21 +120,18 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     fileName = cms.untracked.string('file:output_Phase2_L1T_' + str(options.inputFile) + '.root'),
-    outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
+    outputCommands = myOutputCommands,
     splitLevel = cms.untracked.int32(0)
 )
 
 # Additional output definition
 
 # Other statements
-from HLTrigger.Configuration.CustomConfigs import ProcessName
-process = ProcessName(process)
-
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic_T33', '')
 process.FEVTDEBUGHLToutput.outputCommands.append('drop l1tTrackerMuons_l1tTkMuonsGmt*_*_HLT')
 
-# and Enddefinitions
+# Path and EndPath definitions
 process.L1simulation_step = cms.Path(process.SimL1Emulator)
 process.L1TrackTrigger_step = cms.Path(process.L1TrackTrigger)
 process.Phase2L1GTProducer = cms.Path(process.l1tGTProducerSequence)
@@ -167,60 +177,14 @@ process.pTkMuonPuppiHT6_320 = cms.Path(process.TkMuonPuppiHT6320)
 process.pTkMuonTkEle7_23 = cms.Path(process.TkMuonTkEle723)
 process.pTkMuonTkIsoEle7_20 = cms.Path(process.TkMuonTkIsoEle720)
 process.pTripleTkMuon5_3_3 = cms.Path(process.TripleTkMuon533)
-process.L1T_DoubleNNTau52 = cms.Path(process.HLTL1Sequence+process.hltL1DoubleNNTau52)
-process.L1T_SingleNNTau150 = cms.Path(process.HLTL1Sequence+process.hltL1SingleNNTau150)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
 
 # Schedule definition
-# process.schedule imported from cff in HLTrigger.Configuration
-process.schedule.insert(0, process.L1simulation_step)
-process.schedule.insert(1, process.L1TrackTrigger_step)
-process.schedule.insert(2, process.Phase2L1GTProducer)
-process.schedule.insert(3, process.Phase2L1GTAlgoBlockProducer)
-process.schedule.insert(4, process.TripleTkMuon_5_3_0_DoubleTkMuon_5_3_OS_MassTo9)
-process.schedule.insert(5, process.TripleTkMuon_5_3p5_2p5_OS_Mass5to17)
-process.schedule.insert(6, process.pDoubleEGEle37_24)
-process.schedule.insert(7, process.pDoubleIsoTkPho22_12)
-process.schedule.insert(8, process.pDoublePuppiJet112_112)
-process.schedule.insert(9, process.pDoublePuppiJet160_35_mass620)
-process.schedule.insert(10, process.pDoublePuppiTau52_52)
-process.schedule.insert(11, process.pDoubleTkEle25_12)
-process.schedule.insert(12, process.pDoubleTkElePuppiHT_8_8_390)
-process.schedule.insert(13, process.pDoubleTkMuPuppiHT_3_3_300)
-process.schedule.insert(14, process.pDoubleTkMuPuppiJetPuppiMet_3_3_60_130)
-process.schedule.insert(15, process.pDoubleTkMuon15_7)
-process.schedule.insert(16, process.pDoubleTkMuonTkEle5_5_9)
-process.schedule.insert(17, process.pDoubleTkMuon_4_4_OS_Dr1p2)
-process.schedule.insert(18, process.pDoubleTkMuon_4p5_4p5_OS_Er2_Mass7to18)
-process.schedule.insert(19, process.pDoubleTkMuon_OS_Er1p5_Dr1p4)
-process.schedule.insert(20, process.pIsoTkEleEGEle22_12)
-process.schedule.insert(21, process.pNNPuppiTauPuppiMet_55_190)
-process.schedule.insert(22, process.pPuppiHT400)
-process.schedule.insert(23, process.pPuppiHT450)
-process.schedule.insert(24, process.pPuppiMET200)
-process.schedule.insert(25, process.pPuppiMHT140)
-process.schedule.insert(26, process.pPuppiTauTkIsoEle45_22)
-process.schedule.insert(27, process.pPuppiTauTkMuon42_18)
-process.schedule.insert(28, process.pQuadJet70_55_40_40)
-process.schedule.insert(29, process.pSingleEGEle51)
-process.schedule.insert(30, process.pSingleIsoTkEle28)
-process.schedule.insert(31, process.pSingleIsoTkPho36)
-process.schedule.insert(32, process.pSinglePuppiJet230)
-process.schedule.insert(33, process.pSingleTkEle36)
-process.schedule.insert(34, process.pSingleTkMuon22)
-process.schedule.insert(35, process.pTkEleIsoPuppiHT_26_190)
-process.schedule.insert(36, process.pTkElePuppiJet_28_40_MinDR)
-process.schedule.insert(37, process.pTkEleTkMuon10_20)
-process.schedule.insert(38, process.pTkMuPuppiJetPuppiMet_3_110_120)
-process.schedule.insert(39, process.pTkMuTriPuppiJet_12_40_dRMax_DoubleJet_dEtaMax)
-process.schedule.insert(40, process.pTkMuonDoubleTkEle6_17_17)
-process.schedule.insert(41, process.pTkMuonPuppiHT6_320)
-process.schedule.insert(42, process.pTkMuonTkEle7_23)
-process.schedule.insert(43, process.pTkMuonTkIsoEle7_20)
-process.schedule.insert(44, process.pTripleTkMuon5_3_3)
+process.schedule = cms.Schedule(process.L1simulation_step,process.L1TrackTrigger_step,process.Phase2L1GTProducer,process.Phase2L1GTAlgoBlockProducer,process.TripleTkMuon_5_3_0_DoubleTkMuon_5_3_OS_MassTo9,process.TripleTkMuon_5_3p5_2p5_OS_Mass5to17,process.pDoubleEGEle37_24,process.pDoubleIsoTkPho22_12,process.pDoublePuppiJet112_112,process.pDoublePuppiJet160_35_mass620,process.pDoublePuppiTau52_52,process.pDoubleTkEle25_12,process.pDoubleTkElePuppiHT_8_8_390,process.pDoubleTkMuPuppiHT_3_3_300,process.pDoubleTkMuPuppiJetPuppiMet_3_3_60_130,process.pDoubleTkMuon15_7,process.pDoubleTkMuonTkEle5_5_9,process.pDoubleTkMuon_4_4_OS_Dr1p2,process.pDoubleTkMuon_4p5_4p5_OS_Er2_Mass7to18,process.pDoubleTkMuon_OS_Er1p5_Dr1p4,process.pIsoTkEleEGEle22_12,process.pNNPuppiTauPuppiMet_55_190,process.pPuppiHT400,process.pPuppiHT450,process.pPuppiMET200,process.pPuppiMHT140,process.pPuppiTauTkIsoEle45_22,process.pPuppiTauTkMuon42_18,process.pQuadJet70_55_40_40,process.pSingleEGEle51,process.pSingleIsoTkEle28,process.pSingleIsoTkPho36,process.pSinglePuppiJet230,process.pSingleTkEle36,process.pSingleTkMuon22,process.pTkEleIsoPuppiHT_26_190,process.pTkElePuppiJet_28_40_MinDR,process.pTkEleTkMuon10_20,process.pTkMuPuppiJetPuppiMet_3_110_120,process.pTkMuTriPuppiJet_12_40_dRMax_DoubleJet_dEtaMax,process.pTkMuonDoubleTkEle6_17_17,process.pTkMuonPuppiHT6_320,process.pTkMuonTkEle7_23,process.pTkMuonTkIsoEle7_20,process.pTripleTkMuon5_3_3,process.endjob_step,process.FEVTDEBUGHLToutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
+
 
 l_pathname = [
 'pDoubleEGEle37_24',
@@ -287,7 +251,7 @@ process.L1skimFilter = cms.EDFilter("PathStatusFilter",
 process.L1skimPath = cms.Path(process.L1skimFilter)
 l_path.append(process.L1skimPath)
 
-process.schedule.extend([*l_path, process.endjob_step,process.FEVTDEBUGHLToutput_step])
+process.schedule.extend([*l_path])
 
 # Add the filter in the output module
 EventSelection = cms.PSet(
@@ -295,8 +259,11 @@ EventSelection = cms.PSet(
         SelectEvents = cms.vstring("L1skimPath")                     
     )
 )
-process.FEVTDEBUGHLToutput.SelectEvents = EventSelection.SelectEvents
 
+
+#Setup FWK for multithreaded
+process.options.numberOfThreads = 2
+process.options.numberOfStreams = 4
 
 # customisation of the process.
 
@@ -323,12 +290,6 @@ from L1Trigger.Configuration.customisePhase2TTOn110 import customisePhase2TTOn11
 
 #call to customisation function customisePhase2TTOn110 imported from L1Trigger.Configuration.customisePhase2TTOn110
 process = customisePhase2TTOn110(process)
-
-# Automatic addition of the customisation function from HLTrigger.Configuration.customizeHLTforMC
-from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC 
-
-#call to customisation function customizeHLTforMC imported from HLTrigger.Configuration.customizeHLTforMC
-process = customizeHLTforMC(process)
 
 # End of customisation functions
 
